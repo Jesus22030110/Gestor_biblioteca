@@ -38,14 +38,14 @@ public abstract class GenericDAO<T> {
      * @param id Identificador de la entidad
      * @return true si la operación fue exitosa
      */
-    public abstract boolean delete(Long id);
+    public abstract boolean delete(int id);
 
     /**
      * Busca una entidad por su ID
      * @param id Identificador de la entidad
      * @return La entidad encontrada o null
      */
-    public abstract T findById(Long id);
+    public abstract T findById(int id);
 
     /**
      * Obtiene todas las entidades
