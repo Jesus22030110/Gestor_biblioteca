@@ -93,7 +93,6 @@ public class categoriasDao extends GenericDAO<categorias> {
                 cat.add(mapResultSetToEntity(rs));
             }
         } catch (SQLException e){
-
         }
         return cat;
     }
