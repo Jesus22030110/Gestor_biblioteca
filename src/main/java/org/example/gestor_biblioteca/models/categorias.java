@@ -17,6 +17,10 @@ public class categorias {
         this.id_categoria = id_categoria;
     }
 
+    public int getId_categoria() {
+        return id_categoria;
+    }
+
     public String getCategoria() {
         return categoria;
     }

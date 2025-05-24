@@ -1,6 +1,5 @@
 package org.example.gestor_biblioteca.DAOs;
 
-
 import org.example.gestor_biblioteca.models.autores;
 
 import java.sql.*;
@@ -84,7 +83,6 @@ public autoresDao(Connection connection) {
                     return mapResultSetToEntity(rs);
                 }
             }
-
         } catch (SQLException e){
 
         }
