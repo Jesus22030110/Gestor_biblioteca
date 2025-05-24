@@ -45,24 +45,24 @@ public class prestamos {
         this.id_libro = id_libro;
     }
 
-    public Date getFecha_prestamo() {
-        return fecha_prestamo;
+    public java.sql.Date getFecha_prestamo() {
+        return (java.sql.Date) fecha_prestamo;
     }
 
     public void setFecha_prestamo(Date fecha_prestamo) {
         this.fecha_prestamo = fecha_prestamo;
     }
 
-    public Date getFecha_limite_prestamo() {
-        return fecha_limite_prestamo;
+    public java.sql.Date getFecha_limite_prestamo() {
+        return (java.sql.Date) fecha_limite_prestamo;
     }
 
     public void setFecha_limite_prestamo(Date fecha_limite_prestamo) {
         this.fecha_limite_prestamo = fecha_limite_prestamo;
     }
 
-    public Date getFecha_devolucion() {
-        return fecha_devolucion;
+    public java.sql.Date getFecha_devolucion() {
+        return (java.sql.Date) fecha_devolucion;
     }
 
     public void setFecha_devolucion(Date fecha_devolucion) {
