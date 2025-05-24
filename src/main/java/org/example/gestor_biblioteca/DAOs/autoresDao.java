@@ -73,10 +73,10 @@ public autoresDao(Connection connection) {
     }
 
     @Override
-    public autores findById(int id) {
+    public autores findById(int id_autor) {
         String sql = "SELECT * FROM autores WHERE id_autores = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setInt(1, id);
+            stmt.setInt(1, id_autor);
 
             try(ResultSet rs = stmt.executeQuery()){
                 if(rs.next()){

@@ -66,13 +66,13 @@ public class categoriasDao extends GenericDAO<categorias> {
     }
 
     @Override
-    public categorias findById(int id) {
+    public categorias findById(int id_categoria) {
         String sql = "SELECT * FROM categorias WHERE id_categoria = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setInt(1, id);
+            stmt.setInt(1, id_categoria);
             try(ResultSet rs = stmt.executeQuery()){
-                    if(rs.next()){
+                if(rs.next()){
                         return mapResultSetToEntity(rs);
                 }
             }
@@ -106,5 +106,4 @@ public class categoriasDao extends GenericDAO<categorias> {
         cat.setDescripcion(rs.getString("descripcion"));
         return cat;
     }
-
 }
