@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class LoginAcciones {
 
-    // Interfaz estrategia
+    // Interfaz Strategy
     interface AutenticacionStrategy {
         boolean autenticar(String usuario, String passwordHash);
     }
