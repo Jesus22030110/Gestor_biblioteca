@@ -101,28 +101,36 @@ public class RegistroPantalla {
         return true;
     }
 
-    private void registrarUsuario(String nombre, String apellido1, String apellido2,
-                                  String email, String telefono, String password) {
+
+
+private void registrarUsuario(String nombre, String apellido1, String apellido2,
+                              String email, String telefono, String password) {
+    try {
+        String hash = Utilidades.encriptarSHA1(password);
+        System.out.println("Longitud del hash: " + hash.length()); // Debe ser 40
+
+        usuarios nuevoUsuario = new usuarios();
+        nuevoUsuario.setNombre(nombre);
+        nuevoUsuario.setPrimer_apellido(apellido1);
+        nuevoUsuario.setSegundo_apellido(apellido2);
+        nuevoUsuario.setEmail(email);
+        nuevoUsuario.setTelefono(telefono);
+        nuevoUsuario.setRol(1); // Rol normal por defecto
+        nuevoUsuario.setContrasena(hash);
+
+        // Verificar conexión
         try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
+            System.out.println("Conexión a BD establecida");
             usuariosDao dao = new usuariosDao(conn);
-            usuarios nuevoUsuario = new usuarios();
-
-            nuevoUsuario.setNombre(nombre);
-            nuevoUsuario.setPrimer_apellido(apellido1);
-            nuevoUsuario.setSegundo_apellido(apellido2);
-            nuevoUsuario.setEmail(email);
-            nuevoUsuario.setTelefono(telefono);
-            nuevoUsuario.setRol(1); // Rol normal por defecto
-            nuevoUsuario.setContrasena(Utilidades.encriptarSHA1(password));
-
             if (dao.save(nuevoUsuario)) {
-                Utilidades.mostrarAlerta("Éxito", "Usuario registrado correctamente", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlerta("Éxito", "Usuario registrado", Alert.AlertType.INFORMATION);
             } else {
-                Utilidades.mostrarAlerta("Error", "No se pudo registrar el usuario", Alert.AlertType.ERROR);
+                Utilidades.mostrarAlerta("Error", "No se pudo registrar", Alert.AlertType.ERROR);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            Utilidades.mostrarAlerta("Error", "Error al conectar con la base de datos", Alert.AlertType.ERROR);
         }
+    } catch (Exception e) {
+        Utilidades.mostrarAlerta("Error", "Excepción: " + e.getMessage(), Alert.AlertType.ERROR);
+        e.printStackTrace();
     }
+}
 }

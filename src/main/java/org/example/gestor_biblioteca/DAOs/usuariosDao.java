@@ -11,7 +11,6 @@ public class usuariosDao extends GenericDAO<usuarios> {
         super(connection);
     }
 
-    @Override
     public boolean save(usuarios usuario) {
         String sql = "INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, email, telefono, rol, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -35,6 +34,7 @@ public class usuariosDao extends GenericDAO<usuarios> {
             }
             return false;
         } catch (SQLException e) {
+            System.err.println("Error al guardar usuario: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
