@@ -1,5 +1,6 @@
 package org.example.gestor_biblioteca.views;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -36,10 +37,19 @@ public class LoginAcciones {
             usuarios usuario = autenticarUsuario(usuarioText, hash);
 
             if (usuario != null) {
-                Usuario usuarioSistema = UsuarioFactory.crearUsuario(usuario.getRol());
-                Stage stage = new Stage();
-                usuarioSistema.mostrarMenuPrincipal(stage);
-                ((Stage) boton.getScene().getWindow()).close();
+                // Obtener el Stage actual
+                Stage currentStage = (Stage) boton.getScene().getWindow();
+
+                // Cerrar la ventana actual en el hilo de JavaFX
+                Platform.runLater(() -> {
+                    currentStage.close();
+
+                    // Crear y mostrar la nueva ventana
+                    Stage mainStage = new Stage();
+                    Usuario usuarioSistema = UsuarioFactory.crearUsuario(usuario.getRol());
+                    usuarioSistema.mostrarMenuPrincipal(mainStage);
+                    mainStage.show(); // Asegurarse de mostrar la nueva ventana
+                });
             } else {
                 Utilidades.mostrarAlerta("Error", "Usuario o contraseña incorrectos.", Alert.AlertType.ERROR);
             }
@@ -47,7 +57,8 @@ public class LoginAcciones {
 
         btnRegistro.setOnAction(e -> {
             RegistroPantalla registro = new RegistroPantalla();
-            registro.mostrar(new Stage());
+            Stage registroStage = new Stage();
+            registro.mostrar(registroStage);
         });
     }
 
