@@ -10,9 +10,11 @@ public class usuarios {
     private int rol;
     private String contrasena;
 
-    public usuarios(){}
+    public usuarios() {}
 
-    public usuarios(int id_usuario, String nombre, String primer_apellido, String segundo_apellido, String email, String telefono, int rol) {
+    public usuarios(int id_usuario, String nombre, String primer_apellido,
+                    String segundo_apellido, String email, String telefono,
+                    int rol, String contrasena) {
         this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.primer_apellido = primer_apellido;
@@ -23,6 +25,7 @@ public class usuarios {
         this.contrasena = contrasena;
     }
 
+    // Getters y Setters
     public int getId_usuario() {
         return id_usuario;
     }

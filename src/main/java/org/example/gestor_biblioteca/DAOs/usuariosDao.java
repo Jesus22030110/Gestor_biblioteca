@@ -13,9 +13,9 @@ public class usuariosDao extends GenericDAO<usuarios> {
 
     @Override
     public boolean save(usuarios usuario) {
-        String sql = "INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, email, telefono, rol, contrasena) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, email, telefono, rol, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getPrimer_apellido());
             stmt.setString(3, usuario.getSegundo_apellido());
@@ -25,25 +25,26 @@ public class usuariosDao extends GenericDAO<usuarios> {
             stmt.setString(7, usuario.getContrasena());
 
             int affectedRows = stmt.executeUpdate();
-            if(affectedRows > 0){
-                return false;
-            }
-            try(ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if(generatedKeys.next()){
-                    return  false;
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        usuario.setId_usuario(generatedKeys.getInt(1));
+                        return true;
+                    }
                 }
             }
-            return true;
-        } catch (SQLException e){
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     @Override
     public boolean update(usuarios usuario) {
-        String sql = "UPDATE usuarios SET nombre = ?, primer_apellido = ?, segundo_apellido = ?, email = ?, telefono = ? WHERE rol = ?, contrasena = ?";
+        String sql = "UPDATE usuarios SET nombre = ?, primer_apellido = ?, segundo_apellido = ?, email = ?, telefono = ?, rol = ?, contrasena = ? WHERE id_usuario = ?";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getPrimer_apellido());
             stmt.setString(3, usuario.getSegundo_apellido());
@@ -51,22 +52,24 @@ public class usuariosDao extends GenericDAO<usuarios> {
             stmt.setString(5, usuario.getTelefono());
             stmt.setInt(6, usuario.getRol());
             stmt.setString(7, usuario.getContrasena());
+            stmt.setInt(8, usuario.getId_usuario());
 
             return stmt.executeUpdate() > 0;
-        } catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
-
     }
 
     @Override
     public boolean delete(int id_usuario) {
         String sql = "DELETE FROM usuarios WHERE id_usuario = ?";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id_usuario);
             return stmt.executeUpdate() > 0;
-        } catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -75,14 +78,35 @@ public class usuariosDao extends GenericDAO<usuarios> {
     public usuarios findById(int id_usuario) {
         String sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id_usuario);
-            try(ResultSet rs = stmt.executeQuery()){
-                if(rs.next()){
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
                     return mapResultSetToEntity(rs);
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public usuarios findByEmailOrUsuario(String identificador, String passwordHash) {
+        String sql = "SELECT * FROM usuarios WHERE (email = ? OR nombre = ?) AND contrasena = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, identificador);
+            stmt.setString(2, identificador);
+            stmt.setString(3, passwordHash);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToEntity(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -90,30 +114,31 @@ public class usuariosDao extends GenericDAO<usuarios> {
     @Override
     public List<usuarios> findAll() {
         String sql = "SELECT * FROM usuarios";
-        List<usuarios> us = new ArrayList<>();
+        List<usuarios> listaUsuarios = new ArrayList<>();
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                us.add(mapResultSetToEntity(rs));
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                listaUsuarios.add(mapResultSetToEntity(rs));
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        return us;
+        return listaUsuarios;
     }
 
     @Override
     protected usuarios mapResultSetToEntity(ResultSet rs) throws SQLException {
-        usuarios us = new usuarios();
-        us.setId_usuario(rs.getInt("id_usuario"));
-        us.setNombre(rs.getString("nombre"));
-        us.setPrimer_apellido(rs.getString("primer_apellido"));
-        us.setSegundo_apellido(rs.getString("segundo_apellido"));
-        us.setEmail(rs.getString("email"));
-        us.setTelefono(rs.getString("telefono"));
-        us.setRol(rs.getInt("rol"));
-        us.setContrasena(rs.getString("contrasena"));
-        return us;
+        usuarios usuario = new usuarios();
+        usuario.setId_usuario(rs.getInt("id_usuario"));
+        usuario.setNombre(rs.getString("nombre"));
+        usuario.setPrimer_apellido(rs.getString("primer_apellido"));
+        usuario.setSegundo_apellido(rs.getString("segundo_apellido"));
+        usuario.setEmail(rs.getString("email"));
+        usuario.setTelefono(rs.getString("telefono"));
+        usuario.setRol(rs.getInt("rol"));
+        usuario.setContrasena(rs.getString("contrasena"));
+        return usuario;
     }
 }
