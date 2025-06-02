@@ -26,7 +26,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'org.example.gestor_biblioteca'
-    mainClass = 'org.example.gestor_biblioteca.HelloApplication'
+    mainClassName = 'org.example.gestor_biblioteca.Main'
 }
 
 javafx {
@@ -35,7 +35,7 @@ javafx {
 }
 
 dependencies {
-
+    implementation 'mysql:mysql-connector-java:8.0.33'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
