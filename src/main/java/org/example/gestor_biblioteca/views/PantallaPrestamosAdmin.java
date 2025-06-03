@@ -80,7 +80,7 @@ public class PantallaPrestamosAdmin {
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
             prestamosDao dao = new prestamosDao(conn);
-            if (dao.registrarDevolucion(prestamoSeleccionado.getId_prestamo())) {
+            if (dao.registrarDevolucion(prestamoSeleccionado.getId_prestamos())) {
                 cargarTodosPrestamos();
             }
         } catch (SQLException e) {

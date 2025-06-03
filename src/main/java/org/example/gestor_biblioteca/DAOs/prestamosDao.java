@@ -15,7 +15,7 @@ public class prestamosDao extends GenericDAO<prestamos> {
     public boolean save(prestamos prestamo) {
         String sql = "INSERT INTO prestamos (id_usuario, id_libro, fecha_prestamo, fecha_limite_prestamo, fecha_devolucion) VALUES (?,?,?,?,?)";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setInt(1, prestamo.getId_usuario());
             stmt.setInt(2, prestamo.getId_libro());
             stmt.setDate(3, prestamo.getFecha_prestamo());
@@ -27,22 +27,20 @@ public class prestamosDao extends GenericDAO<prestamos> {
                 return false;
             }
 
-            try(ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    prestamo.setId_prestamo(generatedKeys.getInt(1));
-                    return true;
+            try(ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return false;
                 }
             }
-            return false;
+            return true;
         } catch (SQLException e){
-            e.printStackTrace();
             return false;
         }
     }
 
     @Override
     public boolean update(prestamos prestamo) {
-        String sql = "UPDATE prestamos SET id_usuario = ?, id_libro = ?, fecha_prestamo = ?, fecha_limite_prestamo = ?, fecha_devolucion = ? WHERE id_prestamo = ?";
+        String sql = "UPDATE perstamos SET id_usuario = ?, id_libro = ?, fecha_prestamo = ?, fecha_limite_prestamo = ?, fecha_devolucion = ? WHERE id_usuario = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setInt(1, prestamo.getId_usuario());
@@ -50,41 +48,38 @@ public class prestamosDao extends GenericDAO<prestamos> {
             stmt.setDate(3, prestamo.getFecha_prestamo());
             stmt.setDate(4, prestamo.getFecha_limite_prestamo());
             stmt.setDate(5, prestamo.getFecha_devolucion());
-            stmt.setInt(6, prestamo.getId_prestamo());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e){
-            e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public boolean delete(int id_prestamo) {
-        String sql = "DELETE FROM prestamos WHERE id_prestamo = ?";
+    public boolean delete(int id_prestamos) {
+        String sql = "DELETE FROM prestamos WHERE id_prestamos = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setInt(1, id_prestamo);
+            stmt.setInt(1, id_prestamos);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e){
-            e.printStackTrace();
             return false;
         }
+
     }
 
     @Override
-    public prestamos findById(int id_prestamo) {
-        String sql = "SELECT * FROM prestamos WHERE id_prestamo = ?";
+    public prestamos findById(int id_prestamos) {
+        String sql = "SELECT * FROM prestamos WHERE id_prestamos = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setInt(1, id_prestamo);
+            stmt.setInt(1, id_prestamos);
             try(ResultSet rs = stmt.executeQuery()){
                 if(rs.next()){
                     return mapResultSetToEntity(rs);
                 }
             }
         } catch (SQLException e){
-            e.printStackTrace();
         }
         return null;
     }
@@ -95,12 +90,11 @@ public class prestamosDao extends GenericDAO<prestamos> {
         List<prestamos> prest = new ArrayList<>();
 
         try(PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()){
+        ResultSet rs = stmt.executeQuery()){
             while(rs.next()){
                 prest.add(mapResultSetToEntity(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return prest;
     }
@@ -108,7 +102,7 @@ public class prestamosDao extends GenericDAO<prestamos> {
     @Override
     protected prestamos mapResultSetToEntity(ResultSet rs) throws SQLException {
         prestamos prest = new prestamos();
-        prest.setId_prestamo(rs.getInt("id_prestamo"));
+        prest.setId_prestamos(rs.getInt("id_prestamos"));
         prest.setId_usuario(rs.getInt("id_usuario"));
         prest.setId_libro(rs.getInt("id_libro"));
         prest.setFecha_prestamo(rs.getDate("fecha_prestamo"));
@@ -117,7 +111,6 @@ public class prestamosDao extends GenericDAO<prestamos> {
         return prest;
     }
 
-    // Nuevos métodos para préstamos
     public List<prestamos> findPrestamosActivos(int idUsuario) throws SQLException {
         String sql = "SELECT * FROM prestamos WHERE id_usuario = ? AND fecha_devolucion IS NULL";
         List<prestamos> prestamos = new ArrayList<>();
@@ -145,11 +138,13 @@ public class prestamosDao extends GenericDAO<prestamos> {
     }
 
     public boolean registrarDevolucion(int idPrestamo) throws SQLException {
-        String sql = "UPDATE prestamos SET fecha_devolucion = ? WHERE id_prestamo = ?";
+        String sql = "UPDATE prestamos SET fecha_devolucion = ? WHERE id_prestamos = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setDate(1, new Date(System.currentTimeMillis()));
             stmt.setInt(2, idPrestamo);
             return stmt.executeUpdate() > 0;
         }
     }
+
+
 }

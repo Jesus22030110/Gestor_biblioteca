@@ -132,4 +132,6 @@ public class librosDao extends GenericDAO<libros> {
         lib.setId_categoria(rs.getInt("id_categoria"));
         return lib;
     }
+
+
 }

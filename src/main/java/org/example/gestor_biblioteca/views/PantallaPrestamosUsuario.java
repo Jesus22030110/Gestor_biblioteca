@@ -123,8 +123,6 @@ public class PantallaPrestamosUsuario {
             Scene scene = new Scene(layout, 500, 400);
             libroStage.setScene(scene);
 
-            // Cargar libros disponibles
-            cargarLibrosDisponibles(tablaLibros);
             libroStage.show();
 
         } catch (SQLException e) {
@@ -132,15 +130,7 @@ public class PantallaPrestamosUsuario {
         }
     }
 
-    private void cargarLibrosDisponibles(TableView<libro> tablaLibros) {
-        try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
-            libroDao dao = new libroDao(conn);
-            ObservableList<libro> libros = FXCollections.observableArrayList(dao.findLibrosDisponibles());
-            tablaLibros.setItems(libros);
-        } catch (SQLException e) {
-            mostrarAlerta("Error", "Error al cargar libros: " + e.getMessage());
-        }
-    }
+
 
     private void crearNuevoPrestamo(int idLibro) {
         try (Connection conn = DatabaseConnection.getInstance().getConnection()) {

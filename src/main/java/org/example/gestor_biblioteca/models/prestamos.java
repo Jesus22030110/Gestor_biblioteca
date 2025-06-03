@@ -3,7 +3,7 @@ package org.example.gestor_biblioteca.models;
 import java.sql.Date;
 
 public class prestamos {
-    private int id_prestamo;
+    private int id_prestamos;
     private int id_usuario;
     private int id_libro;
     private Date fecha_prestamo;
@@ -34,12 +34,12 @@ public class prestamos {
         this.fecha_devolucion = fecha_devolucion;
     }
 
-    public int getId_prestamo() {
-        return id_prestamo;
+    public int getId_prestamos() {
+        return id_prestamos;
     }
 
-    public void setId_prestamo(int id_prestamo) {
-        this.id_prestamo = id_prestamo;
+    public void setId_prestamos(int id_prestamos) {
+        this.id_prestamos = id_prestamos;
     }
 
     public int getId_usuario() {
