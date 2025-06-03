@@ -46,9 +46,9 @@ public class LoginAcciones {
 
                     // Crear y mostrar la nueva ventana
                     Stage mainStage = new Stage();
-                    Usuario usuarioSistema = UsuarioFactory.crearUsuario(usuario.getRol());
+                    Usuario usuarioSistema = UsuarioFactory.crearUsuario(usuario);
                     usuarioSistema.mostrarMenuPrincipal(mainStage);
-                    mainStage.show(); // Asegurarse de mostrar la nueva ventana
+                    mainStage.show();
                 });
             } else {
                 Utilidades.mostrarAlerta("Error", "Usuario o contraseña incorrectos.", Alert.AlertType.ERROR);

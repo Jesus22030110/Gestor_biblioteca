@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.gestor_biblioteca.views.AdminLibrosPantalla;
 import org.example.gestor_biblioteca.views.PantallaLibros;
+import org.example.gestor_biblioteca.views.PantallaPrestamosAdmin;
 
 public class UsuarioAdmin implements Usuario {
     @Override
@@ -44,7 +45,8 @@ public class UsuarioAdmin implements Usuario {
     }
 
     private void mostrarPrestamos() {
-        System.out.println("Mostrando préstamos para administrador");
+        Stage prestamosStage = new Stage();
+        new PantallaPrestamosAdmin(prestamosStage).mostrar();
     }
 
     private void mostrarUsuarios() {

@@ -1,6 +1,6 @@
 package org.example.gestor_biblioteca.models;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class prestamos {
     private int id_prestamo;
@@ -10,14 +10,27 @@ public class prestamos {
     private Date fecha_limite_prestamo;
     private Date fecha_devolucion;
 
-    public prestamos() {}
+    public Date getFecha_prestamo() {
+        return fecha_prestamo;
+    }
 
-    public prestamos(int id_prestamo, int id_usuario, int id_libro, Date fecha_prestamo, Date fecha_limite_prestamo, Date fecha_devolucion){
-        this.id_prestamo = id_prestamo;
-        this.id_usuario = id_usuario;
-        this.id_libro = id_libro;
+    public void setFecha_prestamo(Date fecha_prestamo) {
         this.fecha_prestamo = fecha_prestamo;
+    }
+
+    public Date getFecha_limite_prestamo() {
+        return fecha_limite_prestamo;
+    }
+
+    public void setFecha_limite_prestamo(Date fecha_limite_prestamo) {
         this.fecha_limite_prestamo = fecha_limite_prestamo;
+    }
+
+    public Date getFecha_devolucion() {
+        return fecha_devolucion;
+    }
+
+    public void setFecha_devolucion(Date fecha_devolucion) {
         this.fecha_devolucion = fecha_devolucion;
     }
 
@@ -43,29 +56,5 @@ public class prestamos {
 
     public void setId_libro(int id_libro) {
         this.id_libro = id_libro;
-    }
-
-    public java.sql.Date getFecha_prestamo() {
-        return (java.sql.Date) fecha_prestamo;
-    }
-
-    public void setFecha_prestamo(Date fecha_prestamo) {
-        this.fecha_prestamo = fecha_prestamo;
-    }
-
-    public java.sql.Date getFecha_limite_prestamo() {
-        return (java.sql.Date) fecha_limite_prestamo;
-    }
-
-    public void setFecha_limite_prestamo(Date fecha_limite_prestamo) {
-        this.fecha_limite_prestamo = fecha_limite_prestamo;
-    }
-
-    public java.sql.Date getFecha_devolucion() {
-        return (java.sql.Date) fecha_devolucion;
-    }
-
-    public void setFecha_devolucion(Date fecha_devolucion) {
-        this.fecha_devolucion = fecha_devolucion;
     }
 }

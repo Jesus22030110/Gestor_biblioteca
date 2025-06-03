@@ -6,8 +6,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.gestor_biblioteca.views.PantallaLibros;
+import org.example.gestor_biblioteca.views.PantallaPrestamosUsuario;
 
 public class UsuarioNormal implements Usuario {
+
+    private usuarios usuario;
+
+    public UsuarioNormal(usuarios usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public void mostrarMenuPrincipal(Stage stage) {
         VBox layout = new VBox(15);
@@ -18,7 +26,10 @@ public class UsuarioNormal implements Usuario {
         Button btnSalir = new Button("Salir");
 
         btnLibros.setOnAction(e -> mostrarLibros());
-        btnPrestamos.setOnAction(e -> mostrarPrestamos());
+        btnPrestamos.setOnAction(e -> {
+            Stage prestamosStage = new Stage();
+            new PantallaPrestamosUsuario(prestamosStage, usuario).mostrar();
+        });
         btnSalir.setOnAction(e -> stage.close());
 
         layout.getChildren().addAll(btnLibros, btnPrestamos, btnSalir);
@@ -37,4 +48,6 @@ public class UsuarioNormal implements Usuario {
         // Implementar lógica para mostrar préstamos
         System.out.println("Mostrando préstamos para usuario normal");
     }
+
+
 }
