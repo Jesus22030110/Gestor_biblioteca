@@ -13,9 +13,15 @@ public class librosDao extends GenericDAO<libros> {
 
     @Override
     public boolean save(libros libro) {
-        String sql = "INSERT INTO libros (titulo_libro, ano_publicacion, id_editorial, id_autor, id_categoria) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO libros (titulo_libro, ano_publicacion, id_editorial, id_autor, id_categoria) VALUES (?, ?, ?, ?, ?)";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        System.out.println("Intentando guardar libro: " + libro.getTitulo_libro());
+        System.out.println("Año: " + libro.getAno_publicacion());
+        System.out.println("ID Editorial: " + libro.getId_editorial());
+        System.out.println("ID Autor: " + libro.getId_autor());
+        System.out.println("ID Categoría: " + libro.getId_categoria());
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, libro.getTitulo_libro());
             stmt.setInt(2, libro.getAno_publicacion());
             stmt.setInt(3, libro.getId_editorial());
@@ -23,23 +29,28 @@ public class librosDao extends GenericDAO<libros> {
             stmt.setInt(5, libro.getId_categoria());
 
             int rowsAffected = stmt.executeUpdate();
-            if(rowsAffected > 0){
-                return false;
-            }
+            System.out.println("Filas afectadas: " + rowsAffected);
 
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    libro.setId_libro(generatedKeys.getInt(1));
-                } else {
-                    return false;
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int idGenerado = generatedKeys.getInt(1);
+                        libro.setId_libro(idGenerado);
+                        System.out.println("ID generado: " + idGenerado);
+                        return true;
+                    } else {
+                        System.out.println("No se obtuvo ID generado");
+                    }
                 }
             }
-            return true;
-        } catch (SQLException e){
+            return false;
+        } catch (SQLException e) {
+            System.err.println("Error al guardar libro: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
-
     }
+
 
     @Override
     public boolean update(libros libro) {
@@ -90,17 +101,25 @@ public class librosDao extends GenericDAO<libros> {
     @Override
     public List<libros> findAll() {
         String sql = "SELECT * FROM libros";
-        List<libros> lib = new ArrayList<>();
+        List<libros> listaLibros = new ArrayList<>();
+        System.out.println("Buscando todos los libros...");
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()){
-                while (rs.next()){
-                    lib.add(mapResultSetToEntity(rs));
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                libros libro = mapResultSetToEntity(rs);
+                listaLibros.add(libro);
+                System.out.println("Libro encontrado: " + libro.getTitulo_libro());
             }
-        } catch (SQLException e){
+            System.out.println("Total libros encontrados: " + listaLibros.size());
+        } catch (SQLException e) {
+            System.err.println("Error al obtener libros: " + e.getMessage());
+            e.printStackTrace();
         }
-        return lib;
+        return listaLibros;
     }
+
 
     @Override
     protected libros mapResultSetToEntity(ResultSet rs) throws SQLException {

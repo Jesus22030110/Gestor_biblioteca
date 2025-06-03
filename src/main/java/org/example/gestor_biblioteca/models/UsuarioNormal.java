@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.gestor_biblioteca.views.PantallaLibros;
 
 public class UsuarioNormal implements Usuario {
     @Override
@@ -28,8 +29,8 @@ public class UsuarioNormal implements Usuario {
     }
 
     private void mostrarLibros() {
-        // Implementar lógica para mostrar libros
-        System.out.println("Mostrando libros para usuario normal");
+        Stage librosStage = new Stage();
+        new PantallaLibros(librosStage, false); // false indica que no es admin
     }
 
     private void mostrarPrestamos() {

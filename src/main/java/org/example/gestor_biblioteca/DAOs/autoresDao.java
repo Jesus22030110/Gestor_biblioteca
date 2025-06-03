@@ -72,19 +72,23 @@ public autoresDao(Connection connection) {
         }
     }
 
-    @Override
     public autores findById(int id_autor) {
-        String sql = "SELECT * FROM autores WHERE id_autores = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)){
+        String sql = "SELECT * FROM autores WHERE id_autor = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id_autor);
-
-            try(ResultSet rs = stmt.executeQuery()){
-                if(rs.next()){
-                    return mapResultSetToEntity(rs);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    autores autor = new autores();
+                    autor.setId_autor(rs.getInt("id_autor"));
+                    autor.setNombre(rs.getString("nombre"));
+                    autor.setPrimer_apellido(rs.getString("primer_apellido"));
+                    autor.setSegundo_apellido(rs.getString("segundo_apellido"));
+                    return autor;
                 }
             }
-        } catch (SQLException e){
-
+        } catch (SQLException e) {
+            System.err.println("Error al buscar autor por ID: " + id_autor);
+            e.printStackTrace();
         }
         return null;
     }
@@ -114,6 +118,25 @@ public autoresDao(Connection connection) {
         autor.setPrimer_apellido(rs.getString("primer_apellido"));
         autor.setSegundo_apellido(rs.getString("segundo_apellido"));
         return autor;
+    }
+
+    public String getNombreCompleto(int idAutor) {
+        String sql = "SELECT nombre, primer_apellido, segundo_apellido FROM autores WHERE id_autor = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idAutor);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String nombre = rs.getString("nombre");
+                    String apellido1 = rs.getString("primer_apellido");
+                    String apellido2 = rs.getString("segundo_apellido");
+
+                    return nombre + " " + apellido1 + (apellido2 != null ? " " + apellido2 : "");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Desconocido";
     }
 
 }
