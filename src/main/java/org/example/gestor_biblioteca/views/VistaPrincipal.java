@@ -24,17 +24,16 @@ public class VistaPrincipal {
 
         Button btnLibros = new Button("📚 Libros");
         Button btnPrestamos = new Button("📄 Préstamos");
-        Button btnUsuarios = new Button("👤 Usuarios");
         Button btnSalir = new Button("Salir");
 
         btnLibros.setMaxWidth(Double.MAX_VALUE);
         btnPrestamos.setMaxWidth(Double.MAX_VALUE);
-        btnUsuarios.setMaxWidth(Double.MAX_VALUE);
+
         btnSalir.setMaxWidth(Double.MAX_VALUE);
 
         btnSalir.setOnAction(e -> ventana.close());
 
-        VBox layout = new VBox(15, titulo, btnLibros, btnPrestamos, btnUsuarios, btnSalir);
+        VBox layout = new VBox(15, titulo, btnLibros, btnPrestamos, btnSalir);
         layout.setPadding(new Insets(20));
         layout.setStyle("-fx-background-color: #f2f2f2;");
 
