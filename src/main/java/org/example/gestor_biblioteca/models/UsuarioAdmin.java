@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import org.example.gestor_biblioteca.views.AdminLibrosPantalla;
 import org.example.gestor_biblioteca.views.PantallaLibros;
 import org.example.gestor_biblioteca.views.PantallaPrestamosAdmin;
+import org.example.gestor_biblioteca.views.PantallaUsuariosAdmin;
 
 public class UsuarioAdmin implements Usuario {
     @Override
@@ -50,6 +51,7 @@ public class UsuarioAdmin implements Usuario {
     }
 
     private void mostrarUsuarios() {
-        System.out.println("Mostrando gestión de usuarios");
+        Stage usuariosStage = new Stage();
+        new PantallaUsuariosAdmin().mostrar(usuariosStage);
     }
 }

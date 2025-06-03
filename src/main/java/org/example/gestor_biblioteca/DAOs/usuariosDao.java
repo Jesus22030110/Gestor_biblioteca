@@ -42,17 +42,14 @@ public class usuariosDao extends GenericDAO<usuarios> {
 
     @Override
     public boolean update(usuarios usuario) {
-        String sql = "UPDATE usuarios SET nombre = ?, primer_apellido = ?, segundo_apellido = ?, email = ?, telefono = ?, rol = ?, contrasena = ? WHERE id_usuario = ?";
+        // Actualizar solo campos permitidos: nombre, email, teléfono
+        String sql = "UPDATE usuarios SET nombre = ?, email = ?, telefono = ? WHERE id_usuario = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, usuario.getNombre());
-            stmt.setString(2, usuario.getPrimer_apellido());
-            stmt.setString(3, usuario.getSegundo_apellido());
-            stmt.setString(4, usuario.getEmail());
-            stmt.setString(5, usuario.getTelefono());
-            stmt.setInt(6, usuario.getRol());
-            stmt.setString(7, usuario.getContrasena());
-            stmt.setInt(8, usuario.getId_usuario());
+            stmt.setString(2, usuario.getEmail());
+            stmt.setString(3, usuario.getTelefono());
+            stmt.setInt(4, usuario.getId_usuario());
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
