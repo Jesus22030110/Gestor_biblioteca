@@ -91,6 +91,11 @@ public class PantallaLibros {
     }
 
     private void configurarTabla() {
+
+        TableColumn<LibroCompleto, Integer> colId = new TableColumn<>("ID Libro");
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colId.setMinWidth(60);
+
         TableColumn<LibroCompleto, String> colTitulo = new TableColumn<>("Título");
         colTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         colTitulo.setMinWidth(200);
@@ -111,6 +116,7 @@ public class PantallaLibros {
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colCategoria.setMinWidth(120);
 
+        tablaLibros.getColumns().add(0, colId);
         tablaLibros.getColumns().addAll(colTitulo, colAnio, colEditorial, colAutor, colCategoria);
     }
 
