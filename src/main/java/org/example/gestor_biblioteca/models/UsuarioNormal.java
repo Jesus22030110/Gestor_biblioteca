@@ -44,10 +44,6 @@ public class UsuarioNormal implements Usuario {
         new PantallaLibros(librosStage, false); // false indica que no es admin
     }
 
-    private void mostrarPrestamos() {
-        // Implementar lógica para mostrar préstamos
-        System.out.println("Mostrando préstamos para usuario normal");
-    }
 
 
 }

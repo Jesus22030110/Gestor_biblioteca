@@ -107,10 +107,10 @@ public class PantallaPrestamosUsuario {
                         pc.setAutor("Desconocido");
                     }
 
-                    // Todas las fechas
+
                     pc.setFechaPrestamo(p.getFecha_prestamo());
                     pc.setFechaLimite(p.getFecha_limite_prestamo());
-                    pc.setFechaDevolucion(p.getFecha_devolucion());  // Puede ser null
+                    pc.setFechaDevolucion(p.getFecha_devolucion());
 
                     prestamosCompletos.add(pc);
                 }

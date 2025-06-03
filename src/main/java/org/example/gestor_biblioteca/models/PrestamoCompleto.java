@@ -11,8 +11,7 @@ public class PrestamoCompleto {
     private String autor;
     private Date fechaPrestamo;
     private Date fechaLimite;
-    private Date fechaDevolucion;  // Nuevo campo
-
+    private Date fechaDevolucion;
 
     public int getIdPrestamo() { return idPrestamo; }
     public void setIdPrestamo(int idPrestamo) { this.idPrestamo = idPrestamo; }

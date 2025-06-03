@@ -44,3 +44,56 @@ create table prestamos(
     fecha_limite_prestamo date not null ,
     fecha_devolucion date
 );
+
+-- Insercciones
+
+-- INSERCCIONES
+
+INSERT INTO autores (nombre, primer_apellido, segundo_apellido) VALUES
+                                                                    ('Gabriel', 'García', 'Márquez'),
+                                                                    ('Julio', 'Cortázar', NULL),
+                                                                    ('Isabel', 'Allende', 'Llona'),
+                                                                    ('Mario', 'Vargas', 'Llosa'),
+                                                                    ('Pablo', 'Neruda', NULL);
+
+INSERT INTO categorias (categoria, descripcion) VALUES
+                                                    ('Realismo Mágico', 'Fusión de realidad y elementos fantásticos'),
+                                                    ('Ciencia Ficción', 'Ambientados en futuros imaginarios o tecnología avanzada'),
+                                                    ('Poesía', 'Obras en verso y lenguaje lírico'),
+                                                    ('Novela Histórica', 'Ficción basada en eventos históricos'),
+                                                    ('Cuento', 'Narrativa breve de ficción');
+
+INSERT INTO editoriales (editorial) VALUES
+                                        ('Alfaguara'),
+                                        ('Sudamericana'),
+                                        ('Planeta'),
+                                        ('Seix Barral'),
+                                        ('Cátedra');
+
+INSERT INTO libros (titulo_libro, ano_publicacion, id_editorial, id_autor, id_categoria) VALUES
+                                                                                             ('Cien años de soledad', 1967,
+                                                                                              (SELECT id_editorial FROM editoriales WHERE editorial = 'Sudamericana'),
+                                                                                              (SELECT id_autor FROM autores WHERE nombre = 'Gabriel' AND primer_apellido = 'García'),
+                                                                                              (SELECT id_categoria FROM categorias WHERE categoria = 'Realismo Mágico')),
+
+                                                                                             ('Rayuela', 1963,
+                                                                                              (SELECT id_editorial FROM editoriales WHERE editorial = 'Sudamericana'),
+                                                                                              (SELECT id_autor FROM autores WHERE nombre = 'Julio' AND primer_apellido = 'Cortázar'),
+                                                                                              (SELECT id_categoria FROM categorias WHERE categoria = 'Novela Histórica')),
+
+                                                                                             ('Veinte poemas de amor', 1924,
+                                                                                              (SELECT id_editorial FROM editoriales WHERE editorial = 'Cátedra'),
+                                                                                              (SELECT id_autor FROM autores WHERE nombre = 'Pablo' AND primer_apellido = 'Neruda'),
+                                                                                              (SELECT id_categoria FROM categorias WHERE categoria = 'Poesía')),
+
+                                                                                             ('La casa de los espíritus', 1982,
+                                                                                              (SELECT id_editorial FROM editoriales WHERE editorial = 'Planeta'),
+                                                                                              (SELECT id_autor FROM autores WHERE nombre = 'Isabel' AND primer_apellido = 'Allende'),
+                                                                                              (SELECT id_categoria FROM categorias WHERE categoria = 'Realismo Mágico'));
+
+
+INSERT INTO usuarios (nombre, primer_apellido, segundo_apellido, email, telefono, rol, contrasena) VALUES
+    ('Jesus', 'Ramirez', 'Sillero', '22030110@itcelaya.edu.com', '4121605021', 2, 'AquilaVictis02@')
+
+
+ALTER TABLE usuarios MODIFY COLUMN contrasena VARCHAR(255);
